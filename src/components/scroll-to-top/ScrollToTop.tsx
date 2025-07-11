@@ -9,7 +9,7 @@ const ScrollToTop: FC<ScrollToTopProps> = ({ element }) => {
   const { pathname } = useLocation()
 
   useLayoutEffect(() => {
-    element.current?.scrollTo(0, 0)
+    element?.current?.scrollTo(0, 0)
   }, [element, pathname])
 
   return null
