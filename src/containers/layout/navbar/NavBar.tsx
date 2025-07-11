@@ -29,7 +29,11 @@ import { authRoutes } from '~/router/constants/authRoutes'
 import { SizeEnum, UserRoleEnum } from '~/types'
 import { styles } from '~/containers/layout/navbar/NavBar.styles'
 
-const Navbar = () => {
+interface NavbarProps {
+  pageRef: React.RefObject<HTMLDivElement>
+}
+
+const Navbar: React.FC<NavbarProps> = ({ pageRef }) => {
   const { userRole } = useAppSelector((state) => state.appMain)
   const { openDrawer, closeDrawer, isOpen } = useDrawer()
   const { openMenu, renderMenu, closeMenu, anchorEl } = useMenu()
@@ -56,6 +60,10 @@ const Navbar = () => {
 
   const handleOpenSidebar = () => {
     openDrawer()
+  }
+
+  const handleLogoClick = () => {
+    pageRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const findOffersMenu = findOffersChildRoutes.map((childRoute) => (
@@ -103,6 +111,7 @@ const Navbar = () => {
     <Box sx={styles.header}>
       <Button
         component={Link}
+        onClick={handleLogoClick}
         size={SizeEnum.Small}
         sx={styles.logoButton}
         to={guestRoutes.home.path}
