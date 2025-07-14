@@ -12,8 +12,11 @@ import { checkAuth } from '~/redux/reducer'
 
 import { styles } from '~/containers/app-content/AppContent.styles'
 
-const AppMain = () => {
-  const mainWithFooter = useRef(null)
+interface AppMainProps {
+  pageRef: React.RefObject<HTMLDivElement>
+}
+
+const AppMain: React.FC<AppMainProps> = ({ pageRef }) => {
   const authCheckRef = useRef(false)
   const { loading } = useAppSelector((state) => state.appMain)
   const { state } = useNavigation()
@@ -32,12 +35,12 @@ const AppMain = () => {
   }
 
   return (
-    <Box ref={mainWithFooter} sx={styles.content}>
+    <Box ref={pageRef} sx={styles.content}>
       <Suspense fallback={<Loader pageLoad />}>
         <AppBreadCrumbs />
-        <ScrollToTop element={mainWithFooter} />
-        <Outlet context={{ pageRef: mainWithFooter }} />
-        <ScrollToTopButton element={mainWithFooter} />
+        <ScrollToTop element={pageRef} />
+        <Outlet context={{ pageRef: pageRef }} />
+        <ScrollToTopButton element={pageRef} />
         <Footer />
       </Suspense>
     </Box>
