@@ -53,7 +53,7 @@ const CardsWithButton: FC<CardsWithButtonProps> = ({
           <TitleWithDescription
             description={
               <Typography variant='body2'>
-                {t(item.description || '')}
+                {t(item.description || "")}
               </Typography>
             }
             style={styles[boxSide]}
