@@ -8,6 +8,7 @@ import Box from '@mui/material/Box'
 import AppButton from '~/components/app-button/AppButton'
 import TitleWithDescription from '~/components/title-with-description/TitleWithDescription'
 import dots from '~/assets/img/guest-home-page/dots.svg'
+import Typography from '@mui/material/Typography'
 
 import {
   AccordionWithImageItem,
@@ -50,7 +51,11 @@ const CardsWithButton: FC<CardsWithButtonProps> = ({
             <Box className='dots' component='img' src={dots} />
           </Box>
           <TitleWithDescription
-            description={t(item.description)}
+            description={
+              <Typography variant='body2'>
+                {t(item.description || "")}
+              </Typography>
+            }
             style={styles[boxSide]}
             title={t(item.title)}
           />
