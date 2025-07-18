@@ -83,7 +83,7 @@ const ForgotPassword = () => {
         style={styles.titleWithDescription}
         title={t('login.forgotPassword')}
       />
-
+<Box sx={{ mb: 4 }} />
       <Box component='form' onSubmit={handleSubmit}>
         <AppTextField
           autoFocus
