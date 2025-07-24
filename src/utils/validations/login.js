@@ -23,3 +23,10 @@ export const confirmPassword = (password, data) => {
     password !== data.password ? 'common.errorMessages.passwordsDontMatch' : ''
   )
 }
+
+export const termsPrivacyPolicy = (value) => {
+  return emptyField(
+    value ? 'true' : '',
+    'common.errorMessages.termsPrivacyPolicy'
+  )
+}

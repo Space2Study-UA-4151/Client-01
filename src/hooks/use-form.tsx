@@ -86,6 +86,12 @@ export const useForm = <T extends object>({
       setDirty(!isEqual(newData, initialValues))
       return newData
     })
+
+    setTouched((prev) => ({
+      ...prev,
+      [key]: true
+    }))
+
     checkForError(key, value)
   }
 
@@ -96,21 +102,21 @@ export const useForm = <T extends object>({
     }))
   }
 
-  const handleBlur =
-    (key: keyof T) => (event: React.FocusEvent<HTMLInputElement>) => {
-      setDirty(!isEqual(data, initialValues))
+  const handleBlur = (key: keyof T) => () => {
+    setDirty(!isEqual(data, initialValues))
 
-      const valid = validateValue(key, event.target.value)
+    const currentValue = data[key]
+    const valid = validateValue(key, currentValue)
 
-      setErrors((prev) => ({
-        ...prev,
-        [key]: valid ?? ''
-      }))
-      setTouched((prev) => ({
-        ...prev,
-        [key]: true
-      }))
-    }
+    setErrors((prev) => ({
+      ...prev,
+      [key]: valid ?? ''
+    }))
+    setTouched((prev) => ({
+      ...prev,
+      [key]: true
+    }))
+  }
 
   const handleSubmit = (event: React.FormEvent<HTMLDivElement>) => {
     event.preventDefault()
