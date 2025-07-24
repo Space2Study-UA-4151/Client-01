@@ -2,10 +2,9 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
 
-// import GoogleLogin from '~/containers/guest-home-page/google-login/GoogleLogin'
 import SignUpForm from '~/containers/guest-home-page/signup-form/SignUpForm'
 import useForm from '~/hooks/use-form'
-import { useLoginMutation } from '~/services/auth-service'
+import { useSignUpMutation } from '~/services/auth-service'
 import { useModalContext } from '~/context/modal-context'
 import { useSnackBarContext } from '~/context/snackbar-context'
 import {
@@ -13,55 +12,71 @@ import {
   lastName,
   email,
   password,
-  confirmPassword
+  confirmPassword,
+  termsPrivacyPolicy
 } from '~/utils/validations/login'
 import signUpTutorImg from '~/assets/img/signup-dialog/tutor.svg'
 import signUpStudentImg from '~/assets/img/signup-dialog/student.svg'
 import { snackbarVariants } from '~/constants'
 
 import styles from '~/containers/guest-home-page/login-dialog/LoginDialog.styles'
+import { UserRoleEnum } from '~/types'
 
 interface SignUpDialogProps {
-  role: string
+  role: UserRoleEnum
 }
 
 const SignUpDialog = ({ role }: SignUpDialogProps) => {
   const { t } = useTranslation()
   const { closeModal } = useModalContext()
   const { setAlert } = useSnackBarContext()
-  const [loginUser] = useLoginMutation()
+  const [signupUser] = useSignUpMutation()
 
-  const { handleSubmit, handleInputChange, handleBlur, data, errors } = useForm(
-    {
-      onSubmit: async () => {
-        try {
-          await loginUser(data).unwrap()
-          closeModal()
-        } catch (e) {
-          if (typeof e === 'object' && e !== null && 'data' in e) {
-            const err = e as { data: { code: string } }
-            setAlert({
-              severity: snackbarVariants.error,
-              message: `errors.${err.data.code}`
-            })
-          } else {
-            setAlert({
-              severity: snackbarVariants.error,
-              message: 'errors.unknownError'
-            })
-          }
+  const {
+    handleSubmit,
+    handleInputChange,
+    handleNonInputValueChange,
+    handleBlur,
+    data,
+    errors
+  } = useForm({
+    onSubmit: async () => {
+      try {
+        await signupUser(data).unwrap()
+        closeModal()
+      } catch (e) {
+        if (typeof e === 'object' && e !== null && 'data' in e) {
+          const err = e as { data: { code: string } }
+          setAlert({
+            severity: snackbarVariants.error,
+            message: `errors.${err.data.code}`
+          })
+        } else {
+          setAlert({
+            severity: snackbarVariants.error,
+            message: 'errors.unknownError'
+          })
         }
-      },
-      initialValues: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-      },
-      validations: { firstName, lastName, email, password, confirmPassword }
+      }
+    },
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      role: role,
+      areTermsAccepted: false
+    },
+    validations: {
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+      areTermsAccepted: termsPrivacyPolicy
     }
-  )
+  })
 
   return (
     <Box sx={styles.root}>
@@ -69,14 +84,16 @@ const SignUpDialog = ({ role }: SignUpDialogProps) => {
         <Box
           alt='signup'
           component='img'
-          src={role == 'tutor' ? signUpTutorImg : signUpStudentImg}
+          src={role === UserRoleEnum.Tutor ? signUpTutorImg : signUpStudentImg}
           sx={styles.img}
         />
       </Box>
 
       <Box sx={styles.formContainer}>
         <Typography sx={styles.title} variant='h2'>
-          {role == 'tutor' ? t('signup.head.tutor') : t('signup.head.student')}
+          {role === UserRoleEnum.Tutor
+            ? t('signup.head.tutor')
+            : t('signup.head.student')}
         </Typography>
         <Box sx={styles.form}>
           <SignUpForm
@@ -84,9 +101,9 @@ const SignUpDialog = ({ role }: SignUpDialogProps) => {
             errors={errors}
             handleBlur={handleBlur}
             handleChange={handleInputChange}
+            handleNonInputChange={handleNonInputValueChange}
             handleSubmit={handleSubmit}
           />
-          {/* <GoogleLogin buttonWidth={styles.form.maxWidth} type={login} /> */}
         </Box>
       </Box>
     </Box>
