@@ -113,7 +113,15 @@ const SignUpForm = ({
       />
 
       <AppButton
-        disabled={!data.email || !data.password}
+        disabled={
+          Boolean(errors.firstName) ||
+          Boolean(errors.lastName) ||
+          Boolean(errors.confirmPassword) ||
+          Boolean(errors.email) ||
+          Boolean(errors.password) ||
+          Boolean(errors.confirmPassword) ||
+          !data.areTermsAccepted
+        }
         loading={authLoading}
         sx={styles.loginButton}
         type='submit'
