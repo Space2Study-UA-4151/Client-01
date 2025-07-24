@@ -36,7 +36,7 @@ const WhatCanYouDo = () => {
 
   const { openModal } = useModalContext()
   const openSignUpDialog = useCallback(
-    (role: string) => {
+    (role: UserRoleEnum) => {
       openModal({ component: <SignUpDialog role={role} /> })
     },
     [openModal]

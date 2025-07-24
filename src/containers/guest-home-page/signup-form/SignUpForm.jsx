@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 
 import Box from '@mui/material/Box'
 import AppTextField from '~/components/app-text-field/AppTextField'
+import AppCheckboxField from '~/components/app-checkbox-field/AppCheckboxField'
 import AppButton from '~/components/app-button/AppButton'
 
 import { styles } from '~/containers/guest-home-page/signup-form/SignUpForm.styles'
@@ -11,6 +12,7 @@ const SignUpForm = ({
   handleSubmit,
   handleChange,
   handleBlur,
+  handleNonInputChange,
   data,
   errors
 }) => {
@@ -23,7 +25,14 @@ const SignUpForm = ({
   const { authLoading } = useSelector((state) => state.appMain)
 
   const { t } = useTranslation()
-
+  const checkboxLabel =
+    t('signup.iAgree') +
+    ' ' +
+    t('common.labels.terms') +
+    ' ' +
+    t('signup.and') +
+    ' ' +
+    t('common.labels.privacyPolicy')
   return (
     <Box component='form' onSubmit={handleSubmit} sx={styles.form}>
       <Box sx={styles.row}>
@@ -91,6 +100,18 @@ const SignUpForm = ({
         type={showConfirmPassword ? 'text' : 'password'}
         value={data.confirmPassword}
       />
+      <AppCheckboxField
+        checkboxSx={{ mb: '5px' }}
+        checked={data.areTermsAccepted}
+        errorMsg={t(errors.areTermsAccepted)}
+        label={checkboxLabel}
+        labelSx={{ fontSize: '14px' }}
+        onBlur={handleBlur('areTermsAccepted')}
+        onChange={(event) =>
+          handleNonInputChange('areTermsAccepted', event.target.checked)
+        }
+      />
+
       <AppButton
         disabled={!data.email || !data.password}
         loading={authLoading}
