@@ -25,6 +25,7 @@ const SignUpForm = ({
   const { authLoading } = useSelector((state) => state.appMain)
 
   const { t } = useTranslation()
+
   const checkboxLabel =
     t('signup.iAgree') +
     ' ' +
@@ -33,6 +34,7 @@ const SignUpForm = ({
     t('signup.and') +
     ' ' +
     t('common.labels.privacyPolicy')
+
   return (
     <Box component='form' onSubmit={handleSubmit} sx={styles.form}>
       <Box sx={styles.row}>

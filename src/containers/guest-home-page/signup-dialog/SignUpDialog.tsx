@@ -1,3 +1,4 @@
+import { useContext, useEffect } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { useTranslation } from 'react-i18next'
@@ -7,6 +8,7 @@ import useForm from '~/hooks/use-form'
 import { useSignUpMutation } from '~/services/auth-service'
 import { useModalContext } from '~/context/modal-context'
 import { useSnackBarContext } from '~/context/snackbar-context'
+import { ConfirmationDialogContext } from '~/context/confirm-context'
 import {
   firstName,
   lastName,
@@ -30,6 +32,7 @@ const SignUpDialog = ({ role }: SignUpDialogProps) => {
   const { t } = useTranslation()
   const { closeModal } = useModalContext()
   const { setAlert } = useSnackBarContext()
+  const { setNeedConfirmation } = useContext(ConfirmationDialogContext)
   const [signupUser] = useSignUpMutation()
 
   const {
@@ -77,6 +80,17 @@ const SignUpDialog = ({ role }: SignUpDialogProps) => {
       areTermsAccepted: termsPrivacyPolicy
     }
   })
+
+  useEffect(() => {
+    const hasContent =
+      data.firstName.trim() !== '' ||
+      data.lastName.trim() !== '' ||
+      data.email.trim() !== '' ||
+      data.password.trim() !== '' ||
+      data.confirmPassword.trim() !== '' ||
+      data.areTermsAccepted
+    setNeedConfirmation(hasContent)
+  }, [data, setNeedConfirmation])
 
   return (
     <Box sx={styles.root}>

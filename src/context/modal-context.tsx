@@ -4,12 +4,10 @@ import {
   useCallback,
   useContext,
   useMemo,
-  useState,
-  useEffect
+  useState
 } from 'react'
 import PopupDialog from '~/components/popup-dialog/PopupDialog'
 import { PaperProps } from '@mui/material/Paper'
-import ConfirmDialog from '~/components/confirm-dialog/ConfirmDialog'
 
 interface Component {
   component: React.ReactElement
@@ -19,8 +17,6 @@ interface Component {
 interface ModalProvideContext {
   openModal: (component: Component, delayToClose?: number) => void
   closeModal: () => void
-  openConfirmModal: (component: React.ReactElement) => void
-  closeConfirmModal: () => void
 }
 
 interface ModalProviderProps {
@@ -35,9 +31,6 @@ const ModalProvider: FC<ModalProviderProps> = ({ children }) => {
   const [modal, setModal] = useState<React.ReactElement | null>(null)
   const [paperProps, setPaperProps] = useState<PaperProps>({})
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null)
-  const [confirmModal, setConfirmModal] = useState<React.ReactElement | null>(
-    null
-  )
 
   const closeModal = useCallback(() => {
     setModal(null)
@@ -63,59 +56,21 @@ const ModalProvider: FC<ModalProviderProps> = ({ children }) => {
     [setModal, setPaperProps, closeModalAfterDelay]
   )
 
-  const openConfirmModal = useCallback((component: React.ReactElement) => {
-    setConfirmModal(component)
-  }, [])
-
-  const closeConfirmModal = useCallback(() => {
-    setConfirmModal(null)
-  }, [])
-
-  useEffect(() => {
-    const handler = () => closeConfirmModal()
-    window.addEventListener('closeConfirm', handler)
-    return () => window.removeEventListener('closeConfirm', handler)
-  }, [closeConfirmModal])
-
   const contextValue = useMemo(
-    () => ({ openModal, closeModal, openConfirmModal, closeConfirmModal }),
-    [openModal, closeModal, openConfirmModal, closeConfirmModal]
+    () => ({ openModal, closeModal }),
+    [openModal, closeModal]
   )
 
   return (
     <ModalContext.Provider value={contextValue}>
       {children}
-
       {modal && (
         <PopupDialog
           closeModalAfterDelay={closeModalAfterDelay}
           content={modal}
-          onClose={() =>
-            openConfirmModal(
-              <ConfirmDialog
-                message='Are you certain you want to close? Any unsaved changes will be lost'
-                onConfirm={() => {
-                  closeConfirmModal()
-                  closeModal()
-                }}
-                onDismiss={closeConfirmModal}
-                open
-                title='Please Confirm'
-              />
-            )
-          }
+          onClose={closeModal}
           paperProps={paperProps}
           timerId={timer}
-        />
-      )}
-
-      {confirmModal && (
-        <PopupDialog
-          closeModalAfterDelay={() => {}}
-          content={confirmModal}
-          onClose={closeConfirmModal}
-          paperProps={{}}
-          timerId={null}
         />
       )}
     </ModalContext.Provider>
