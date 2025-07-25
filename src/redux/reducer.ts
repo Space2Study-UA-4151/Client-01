@@ -62,6 +62,7 @@ export const mainSlice = createSlice({
   reducers: {
     setUser(state, action: PayloadAction<string>) {
       const userData: AccessToken = parseJwt(action.payload)
+      console.log(userData)
       state.userId = userData.id
       state.userRole = userData.role
       state.isFirstLogin = userData.isFirstLogin
