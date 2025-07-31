@@ -12,6 +12,8 @@ import { AccessToken, ErrorResponse, UserRole } from '~/types'
 
 interface UserState {
   userId: string
+  firstName: string
+  lastName: string
   userRole: UserRole | ''
   authLoading: boolean
   error: string
@@ -22,7 +24,9 @@ interface UserState {
 
 const initialState: UserState = {
   userId: '',
-  userRole: '',
+  firstName: '',
+  lastName: '',
+  userRole: 'tutor' as UserRole | '',
   authLoading: false,
   loading: true,
   pageLoad: false,
@@ -64,6 +68,8 @@ export const mainSlice = createSlice({
       const userData: AccessToken = parseJwt(action.payload)
       state.userId = userData.id
       state.userRole = userData.role
+      state.firstName = userData.firstName
+      state.lastName = userData.lastName
       state.isFirstLogin = userData.isFirstLogin
     },
     logout(state) {

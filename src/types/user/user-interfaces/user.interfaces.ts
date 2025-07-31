@@ -85,6 +85,8 @@ export interface SignupResponse {
 
 export interface AccessToken {
   id: string
+  firstName: string
+  lastName: string
   role: UserRole
   isFirstLogin: boolean
 }
