@@ -26,7 +26,7 @@ const initialState: UserState = {
   userId: '',
   firstName: '',
   lastName: '',
-  userRole: 'tutor' as UserRole | '',
+  userRole: '',
   authLoading: false,
   loading: true,
   pageLoad: false,
@@ -74,6 +74,8 @@ export const mainSlice = createSlice({
     },
     logout(state) {
       state.userId = initialState.userId
+      state.firstName = initialState.firstName
+      state.lastName = initialState.lastName
       state.userRole = initialState.userRole
       state.isFirstLogin = initialState.isFirstLogin
     },
