@@ -26,5 +26,10 @@ export const styles = {
     justifyContent: 'space-between',
     m: { md: 0, xs: '0 auto' },
     pt: 0
+  },
+  rightContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '30px'
   }
 }
