@@ -20,6 +20,9 @@ interface UseFormOutput<T> {
     key: keyof T
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void
   handleNonInputValueChange: (key: keyof T, value: T[keyof T]) => void
+  handleAutoCompleteChange: <K extends keyof T>(
+    key: K
+  ) => (event: React.ChangeEvent<HTMLInputElement>, value: T[K] | null) => void
   handleBlur: (
     key: keyof T
   ) => (event: React.FocusEvent<HTMLInputElement>) => void
@@ -73,7 +76,27 @@ export const useForm = <T extends object>({
       }))
       checkForError(key, event.target.value)
     }
+  const handleAutoCompleteChange =
+    <K extends keyof T>(key: K) =>
+    (_event: React.ChangeEvent<HTMLInputElement>, value: T[K] | null) => {
+      if (value === null) return
 
+      setData((prev) => {
+        const newData = {
+          ...prev,
+          [key]: value
+        }
+        setDirty(!isEqual(newData, initialValues))
+        return newData
+      })
+
+      setTouched((prev) => ({
+        ...prev,
+        [key]: true
+      }))
+
+      checkForError(key, value)
+    }
   const handleNonInputValueChange = <K extends keyof T>(
     key: K,
     value: T[K]
@@ -173,6 +196,7 @@ export const useForm = <T extends object>({
     handleDataChange,
     handleInputChange,
     handleNonInputValueChange,
+    handleAutoCompleteChange,
     handleBlur,
     handleErrors,
     handleSubmit,

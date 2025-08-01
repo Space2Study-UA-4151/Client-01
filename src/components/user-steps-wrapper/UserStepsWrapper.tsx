@@ -1,5 +1,8 @@
 import { FC, useEffect, useState } from 'react'
 import { useAppDispatch } from '~/hooks/use-redux'
+import { useAppSelector } from '~/hooks/use-redux'
+import { RootState } from '~/redux/store'
+
 import { markFirstLoginComplete } from '~/redux/reducer'
 import StepWrapper from '~/components/step-wrapper/StepWrapper'
 
@@ -23,7 +26,13 @@ interface UserStepsWrapperProps {
 const UserStepsWrapper: FC<UserStepsWrapperProps> = ({ userRole }) => {
   const [isUserFetched, setIsUserFetched] = useState(false)
   const dispatch = useAppDispatch()
-
+  const { firstName, lastName } = useAppSelector(
+    (state: RootState) => state.appMain
+  )
+  if (firstName && lastName) {
+    initialValues.firstName = firstName
+    initialValues.lastName = lastName
+  }
   useEffect(() => {
     dispatch(markFirstLoginComplete())
   }, [dispatch])
