@@ -29,8 +29,6 @@ const GeneralInfoStep = ({ btnsBox }) => {
     initialValues: { ...contextData },
     validations: { firstName, lastName }
   })
-  console.log('Context data', contextData)
-  console.log('Form data', data)
 
   useEffect(() => {
     handleStepData('generalInfo', data, errors)
