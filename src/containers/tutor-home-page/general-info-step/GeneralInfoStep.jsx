@@ -8,7 +8,7 @@ import useForm from '~/hooks/use-form'
 import { firstName, lastName } from '~/utils/validations/login'
 
 import { styles } from '~/containers/tutor-home-page/general-info-step/GeneralInfoStep.styles'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useStepContext } from '~/context/step-context'
 import { useTranslation } from 'react-i18next'
 
@@ -23,14 +23,27 @@ const GeneralInfoStep = ({ btnsBox }) => {
     errors,
     handleInputChange,
     handleBlur,
-    handleAutoCompleteChange
+    handleAutoCompleteChange,
+    handleDataChange
   } = useForm({
     initialValues: { ...contextData },
     validations: { firstName, lastName }
   })
+
   useEffect(() => {
     handleStepData('generalInfo', data, errors)
   }, [data, errors, handleStepData])
+
+  const prevCountryRef = useRef(contextData.country)
+
+  useEffect(() => {
+    if (prevCountryRef.current === contextData.country) {
+      prevCountryRef.current = contextData.country
+      return
+    }
+    handleDataChange({ country: contextData.country, city: '' })
+    prevCountryRef.current = contextData.country
+  }, [contextData.country, handleDataChange])
   return (
     <Box sx={styles.container}>
       <Box sx={styles.imgContainer}>
