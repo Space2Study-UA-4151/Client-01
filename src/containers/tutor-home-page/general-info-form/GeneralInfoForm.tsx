@@ -82,7 +82,7 @@ const GeneralInfoForm = ({
           fullWidth
           onChange={handleAutoCompleteChange('city')}
           options={cityOptions}
-          textFieldProps={{ label: 'City', error: !data.country }}
+          textFieldProps={{ label: 'City' }}
           value={data.city}
         />
       </Box>
