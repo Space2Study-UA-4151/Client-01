@@ -3,28 +3,60 @@ import { Typography } from '@mui/material'
 import Autocomplete from '@mui/material/Autocomplete'
 import { TextField } from '@mui/material'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
 import { styles } from '~/containers/tutor-home-page/language-step/LanguageStep.styles'
 import img from '~/assets/img/tutor-home-page/become-tutor/languages.svg'
 
-const SPOKEN_LANG_ENUM = [
-  'English',
-  'Ukrainian',
-  'Polish',
-  'German',
-  'French',
-  'Spanish',
-  'Arabic'
-]
+// const SPOKEN_LANG_ENUM = [
+//   'English',
+//   'Ukrainian',
+//   'Polish',
+//   'German',
+//   'French',
+//   'Spanish',
+//   'Arabic'
+// ]
+
+const API_BASE = import.meta.env.VITE_API_BASE_PATH
 
 const LanguageStep = ({ btnsBox }) => {
   const [selectedLanguage, setSelectedLanguage] = useState(null)
+  const [languages, setLanguages] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [setError] = useState(null)
 
   const handleChange = (event, newValue) => {
     setSelectedLanguage(newValue)
     console.log('Selected language:', newValue)
   }
+
+  useEffect(() => {
+    const fetchLanguages = async () => {
+      console.log('Fetching languages from:', `${API_BASE}languages`)
+      try {
+        const response = await axios.get(`${API_BASE}languages`)
+        console.log('Response data:', response.data)
+
+        if (response.data && Array.isArray(response.data.languages)) {
+          setLanguages(response.data.languages)
+          setError(null)
+        } else {
+          setError('Invalid data format from server')
+          setLanguages([])
+        }
+      } catch (err) {
+        setError('Failed to fetch languages')
+        setLanguages([])
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchLanguages()
+  }, [])
 
   return (
     <Box sx={styles.container}>
@@ -38,11 +70,14 @@ const LanguageStep = ({ btnsBox }) => {
             cooperate.
           </Typography>
           <Autocomplete
+            getOptionLabel={(option) => option || ''}
+            isOptionEqualToValue={(option, value) => option === value}
             onChange={handleChange}
-            options={SPOKEN_LANG_ENUM}
+            options={languages}
             renderInput={(params) => (
               <TextField
                 {...params}
+                disabled={loading}
                 label='Your native language'
                 variant='outlined'
               />
