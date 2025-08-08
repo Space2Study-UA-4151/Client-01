@@ -18,7 +18,7 @@ import { guestRouter } from '~/router/routes/guestRouter'
 import { authRouter } from '~/router/routes/authRouter'
 import { home } from '~/router/constants/crumbs'
 
-const HomeRoute = lazy(() => import('~/router/helpers/HomeRoute'))
+const HomePage = lazy(() => import('~/pages/home-page/HomePage'))
 const Logout = lazy(() => import('~/pages/logout/Logout'))
 
 export const routerConfig = (
@@ -28,7 +28,7 @@ export const routerConfig = (
     path={guestRoutes.home.route}
   >
     <Route element={<AppContent />} handle={{ crumb: home }}>
-      <Route element={<HomeRoute />} index />
+      <Route element={<HomePage />} index />
       {guestRouter}
       {authRouter}
       {tutorRouter}

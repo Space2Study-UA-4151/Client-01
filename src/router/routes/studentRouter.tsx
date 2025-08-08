@@ -9,6 +9,6 @@ const StudentHome = lazy(() => import('~/pages/student-home/StudentHome'))
 
 export const studentRouter = (
   <Route element={<PrivateRoute role={[UserRoleEnum.Student]} />}>
-    <Route element={<StudentHome />} path={guestRoutes.student.route} />
+    <Route element={<StudentHome />} path={guestRoutes.home.route} />
   </Route>
 )
