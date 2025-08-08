@@ -34,10 +34,8 @@ const LanguageStep = ({ btnsBox }) => {
 
   useEffect(() => {
     const fetchLanguages = async () => {
-      console.log('Fetching languages from:', `${API_BASE}languages`)
       try {
         const response = await axios.get(`${API_BASE}languages`)
-        console.log('Response data:', response.data)
 
         if (response.data && Array.isArray(response.data.languages)) {
           setLanguages(response.data.languages)
@@ -56,7 +54,7 @@ const LanguageStep = ({ btnsBox }) => {
     }
 
     fetchLanguages()
-  }, [])
+  }, [setError])
 
   return (
     <Box sx={styles.container}>
