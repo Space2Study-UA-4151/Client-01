@@ -9,6 +9,6 @@ const TutorHome = lazy(() => import('~/pages/tutor-home/TutorHome'))
 
 export const tutorRouter = (
   <Route element={<PrivateRoute role={[UserRoleEnum.Tutor]} />}>
-    <Route element={<TutorHome />} path={guestRoutes.tutor.route} />
+    <Route element={<TutorHome />} path={guestRoutes.home.route} />
   </Route>
 )

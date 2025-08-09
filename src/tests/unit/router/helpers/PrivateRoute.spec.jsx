@@ -16,10 +16,10 @@ const contextValue = { context: 'context' }
 useOutletContext.mockReturnValue(contextValue)
 
 const properState = {
-  appMain: { userRole: 'student' }
+  appMain: { userRole: ['student'] }
 }
 const inappropriateState = {
-  appMain: { usrRole: 'tutor' }
+  appMain: { userRole: ['tutor'] }
 }
 
 describe('PrivateRoute component', () => {
