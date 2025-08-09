@@ -1,4 +1,5 @@
 import { useAppSelector } from '~/hooks/use-redux'
+import { UserRoleEnum } from '~/types'
 
 import GuestHomePage from '../guest-home-page/GuestHome'
 import TutorHome from '../tutor-home/TutorHome'
@@ -6,11 +7,11 @@ import StudentHome from '../student-home/StudentHome'
 
 const HomePage = () => {
   const { userRole } = useAppSelector((state) => state.appMain)
-  console.log('User role', userRole)
-  switch (userRole[0]) {
-    case 'tutor':
+
+  switch (userRole) {
+    case UserRoleEnum.Tutor:
       return <TutorHome />
-    case 'student':
+    case UserRoleEnum.Student:
       return <StudentHome />
     default:
       return <GuestHomePage />

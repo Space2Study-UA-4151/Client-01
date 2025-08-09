@@ -67,7 +67,7 @@ export const mainSlice = createSlice({
     setUser(state, action: PayloadAction<string>) {
       const userData: AccessToken = parseJwt(action.payload)
       state.userId = userData.id
-      state.userRole = userData.role
+      state.userRole = userData.role[0] as UserRole
       state.firstName = userData.firstName
       state.lastName = userData.lastName
       state.isFirstLogin = userData.isFirstLogin
