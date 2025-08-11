@@ -9,40 +9,63 @@ import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import studyCategoryImg from '~/assets/img/tutor-home-page/become-tutor/study-category.svg'
 
+const categories = [
+  { _id: 'cat1', name: 'Mathematics' },
+  { _id: 'cat2', name: 'Languages' },
+  { _id: 'cat3', name: 'Computer Science' },
+  { _id: 'cat4', name: 'Music' },
+  { _id: 'cat5', name: 'History' }
+]
+const subjects = [
+  { _id: 'sub1', name: 'Algebra', categoryId: 'cat1' },
+  { _id: 'sub2', name: 'Geometry', categoryId: 'cat1' },
+  { _id: 'sub3', name: 'Calculus', categoryId: 'cat1' },
+  { _id: 'sub4', name: 'Statistics', categoryId: 'cat1' },
+  { _id: 'sub5', name: 'English', categoryId: 'cat2' },
+  { _id: 'sub6', name: 'French', categoryId: 'cat2' },
+  { _id: 'sub7', name: 'Spanish', categoryId: 'cat2' },
+  { _id: 'sub8', name: 'Programming', categoryId: 'cat3' },
+  { _id: 'sub9', name: 'Algorithms', categoryId: 'cat3' },
+  { _id: 'sub10', name: 'Web Development', categoryId: 'cat3' },
+  { _id: 'sub11', name: 'Piano', categoryId: 'cat4' },
+  { _id: 'sub12', name: 'Guitar', categoryId: 'cat4' },
+  { _id: 'sub13', name: 'Music Theory', categoryId: 'cat4' },
+  { _id: 'sub14', name: 'World History', categoryId: 'cat5' },
+  { _id: 'sub15', name: 'European History', categoryId: 'cat5' },
+  { _id: 'sub16', name: 'American History', categoryId: 'cat5' }
+]
+
 const SubjectsStep = ({ btnsBox }) => {
-  const { handleStepData } = useStepContext()
-  const categories = [
-    { _id: 'cat1', name: 'Mathematics' },
-    { _id: 'cat2', name: 'Languages' },
-    { _id: 'cat3', name: 'Computer Science' },
-    { _id: 'cat4', name: 'Music' },
-    { _id: 'cat5', name: 'History' }
-  ]
-  const subjects = [
-    { _id: 'sub1', name: 'Algebra', categoryId: 'cat1' },
-    { _id: 'sub2', name: 'Geometry', categoryId: 'cat1' },
-    { _id: 'sub3', name: 'Calculus', categoryId: 'cat1' },
-    { _id: 'sub4', name: 'Statistics', categoryId: 'cat1' },
-    { _id: 'sub5', name: 'English', categoryId: 'cat2' },
-    { _id: 'sub6', name: 'French', categoryId: 'cat2' },
-    { _id: 'sub7', name: 'Spanish', categoryId: 'cat2' },
-    { _id: 'sub8', name: 'Programming', categoryId: 'cat3' },
-    { _id: 'sub9', name: 'Algorithms', categoryId: 'cat3' },
-    { _id: 'sub10', name: 'Web Development', categoryId: 'cat3' },
-    { _id: 'sub11', name: 'Piano', categoryId: 'cat4' },
-    { _id: 'sub12', name: 'Guitar', categoryId: 'cat4' },
-    { _id: 'sub13', name: 'Music Theory', categoryId: 'cat4' },
-    { _id: 'sub14', name: 'World History', categoryId: 'cat5' },
-    { _id: 'sub15', name: 'European History', categoryId: 'cat5' },
-    { _id: 'sub16', name: 'American History', categoryId: 'cat5' }
-  ]
-  const [selectedCategory, setSelectedCategory] = useState('')
+  const { stepData, handleStepData } = useStepContext()
+  const subjectsFromContext = stepData['subjects'] || []
+
+  const [addedSubjects, setAddedSubjects] = useState(
+    subjectsFromContext.map((item) => item.subject)
+  )
+  const [selectedCategory, setSelectedCategory] = useState(
+    subjectsFromContext[0]?.category?._id || ''
+  )
   const [selectedSubject, setSelectedSubject] = useState('')
-  const [addedSubjects, setAddedSubjects] = useState([])
 
   useEffect(() => {
     setSelectedSubject('')
   }, [selectedCategory])
+
+  useEffect(() => {
+    if (!selectedCategory) return
+    handleStepData(
+      'subjects',
+      addedSubjects.map((subj) => ({
+        category: categories.find(
+          (cat) =>
+            cat._id === selectedCategory ||
+            cat.id === selectedCategory ||
+            cat.name === selectedCategory
+        ),
+        subject: subj
+      }))
+    )
+  }, [addedSubjects, selectedCategory, handleStepData])
 
   return (
     <Box sx={{ ...styles.container, alignItems: 'flex-start' }}>
