@@ -5,6 +5,7 @@ import { TextField } from '@mui/material'
 
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useStepContext } from '~/context/step-context'
 
 import { styles } from '~/containers/tutor-home-page/language-step/LanguageStep.styles'
 import img from '~/assets/img/tutor-home-page/become-tutor/languages.svg'
@@ -22,15 +23,22 @@ import img from '~/assets/img/tutor-home-page/become-tutor/languages.svg'
 const API_BASE = import.meta.env.VITE_API_BASE_PATH
 
 const LanguageStep = ({ btnsBox }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState(null)
+  const { stepData, handleStepData } = useStepContext()
+  const languageFromContext = stepData['language'] || null
+
   const [languages, setLanguages] = useState([])
   const [loading, setLoading] = useState(true)
   const [setError] = useState(null)
+  const [selectedLanguage, setSelectedLanguage] = useState(languageFromContext)
 
   const handleChange = (event, newValue) => {
     setSelectedLanguage(newValue)
     console.log('Selected language:', newValue)
   }
+
+  useEffect(() => {
+    handleStepData('language', selectedLanguage)
+  }, [selectedLanguage, handleStepData])
 
   useEffect(() => {
     const fetchLanguages = async () => {
