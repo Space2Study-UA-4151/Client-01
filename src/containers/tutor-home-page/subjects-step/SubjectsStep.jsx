@@ -222,7 +222,7 @@ const SubjectsStep = ({ btnsBox }) => {
             ))}
           </div>
         </div>
-        <div style={{ width: '100%', marginTop: 32 }}>{btnsBox}</div>
+        <div style={{ width: '100%', marginBottom: 60 }}>{btnsBox}</div>
       </Box>
     </Box>
   )
