@@ -9,6 +9,7 @@ import WestIcon from '@mui/icons-material/West'
 
 import AppButton from '~/components/app-button/AppButton'
 import useSteps from '~/hooks/use-steps'
+import { useStepContext } from '~/context/step-context'
 import { styles } from '~/components/step-wrapper/StepWrapper.styles'
 
 const StepWrapper = ({ children, steps }) => {
@@ -16,8 +17,9 @@ const StepWrapper = ({ children, steps }) => {
     useSteps({
       steps
     })
-  const { next, back, setActiveStep, handleSubmit } = stepOperation
+  const { next, back, setActiveStep } = stepOperation
   const { t } = useTranslation()
+  const { stepData } = useStepContext()
 
   const stepLabels = steps.map((step, index) => (
     <Box
@@ -31,10 +33,14 @@ const StepWrapper = ({ children, steps }) => {
     </Box>
   ))
 
+  const handleStepClick = () => {
+    console.log('All Step Data:', stepData)
+  }
+
   const nextButton = isLastStep ? (
     <AppButton
       loading={loading}
-      onClick={handleSubmit}
+      onClick={handleStepClick}
       size='small'
       sx={styles.finishBtn}
       variant='contained'

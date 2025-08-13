@@ -28,7 +28,7 @@ const LanguageStep = ({ btnsBox }) => {
 
   const [languages, setLanguages] = useState([])
   const [loading, setLoading] = useState(true)
-  const [setError] = useState(null)
+  const [error, setError] = useState(null)
   const [selectedLanguage, setSelectedLanguage] = useState(languageFromContext)
 
   const handleChange = (event, newValue) => {
@@ -75,6 +75,11 @@ const LanguageStep = ({ btnsBox }) => {
             Please select the language in which you would like to study and
             cooperate.
           </Typography>
+          {error && (
+            <Typography color='error' sx={{ mt: 1 }} variant='body2'>
+              {error}
+            </Typography>
+          )}
           <Autocomplete
             getOptionLabel={(option) => option || ''}
             isOptionEqualToValue={(option, value) => option === value}
