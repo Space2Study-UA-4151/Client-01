@@ -25,8 +25,12 @@ import AppToolbar from '~/components/app-toolbar/AppToolbar'
 import OfferRequestBlock from '~/containers/find-offer/offer-request-block/OfferRequestBlock'
 import AsyncAutocomplete from '~/components/async-autocomlete/AsyncAutocomplete'
 import useBreakpoints from '~/hooks/use-breakpoints'
-import serviceIcon from '~/assets/img/student-home-page/service_icon.png'
-import { getOpositeRole, getScreenBasedLimit } from '~/utils/helper-functions'
+import { icons } from '~/constants/categories-icons/icons'
+import {
+  getOpositeRole,
+  getScreenBasedLimit,
+  hexToRgba
+} from '~/utils/helper-functions'
 import { mapArrayByField } from '~/utils/map-array-by-field'
 
 import {
@@ -99,10 +103,12 @@ const Subjects = () => {
       subjects.map((item: SubjectInterface) => {
         return (
           <CardWithLink
+            Icon={icons.Design}
+            color='red'
             description={`${item.totalOffers[oppositeRole]} ${t(
               'categoriesPage.offers'
             )}`}
-            img={serviceIcon}
+            iconBackground={hexToRgba('red')}
             key={item._id}
             link={`${authRoutes.categories.path}?categoryId=${categoryId}&subjectId=${item._id}`}
             title={item.name}
