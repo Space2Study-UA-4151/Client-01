@@ -16,7 +16,9 @@ export const categoryService = {
   // ): Promise<AxiosResponse<ItemsWithCount<CategoryInterface>>> => {
   //   return axiosClient.get(URLs.categories.get, { params })
   // },
-  getCategories: (params?: Partial<CategoriesParams>) => {
+  getCategories: (
+    params?: Partial<CategoriesParams>
+  ): Promise<AxiosResponse<ItemsWithCount<CategoryInterface>>> => {
     const filtered = categoies.filter((cat) => {
       if (!params?.name) return true
       return cat.name.toLowerCase().includes(params.name.toLowerCase())
