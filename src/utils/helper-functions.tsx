@@ -253,3 +253,5 @@ export const getGroupedByDate = <T extends { createdAt: string }>(
 
     return result
   }, [])
+export const hexToRgba = (hex: string) =>
+  `rgba(${parseInt(hex.slice(1, 3), 16)}, ${parseInt(hex.slice(3, 5), 16)}, ${parseInt(hex.slice(5, 7), 16)}, 0.2)`

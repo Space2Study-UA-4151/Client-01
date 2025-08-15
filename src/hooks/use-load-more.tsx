@@ -3,6 +3,7 @@ import { useState, useMemo, useLayoutEffect, useCallback } from 'react'
 import useAxios from '~/hooks/use-axios'
 
 import { defaultResponses } from '~/constants'
+import categories from '~/constants/categories/categories.json'
 import { ServiceFunction, ItemsWithCount } from '~/types'
 
 interface UseLoadMoreProps<Data, Params> {
@@ -17,7 +18,7 @@ const useLoadMore = <Data, Params>({
   params
 }: UseLoadMoreProps<Data, Params>) => {
   const [skip, setSkip] = useState<number>(0)
-  const [data, setData] = useState<Data[]>([])
+  const [data, setData] = useState<Data[]>(categories as Data[])
   const [previousLimit, setPreviousLimit] = useState<number>(limit)
 
   let isFetched = false

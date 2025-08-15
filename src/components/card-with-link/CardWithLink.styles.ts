@@ -1,10 +1,19 @@
 export const styles = {
-  img: {
-    width: '100%',
-    alignSelf: 'center',
-    mr: '24px',
+  imgContainer: {
+    padding: '15px',
+    // width: '100%',
+    // alignSelf: 'center',
+    objectFit: 'contain',
+    mr: '25px',
     maxWidth: '62px',
-    maxHeight: '62px'
+    maxHeight: '62px',
+    borderRadius: '6px'
+  },
+  img: {
+    fontSize: '32px',
+    width: '32px',
+    height: '32px',
+    display: 'block'
   },
   titleWithDescription: {
     wrapper: {

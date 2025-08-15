@@ -7,21 +7,35 @@ import TitleWithDescription from '~/components/title-with-description/TitleWithD
 import { styles } from '~/components/card-with-link/CardWithLink.styles'
 
 interface CardWithLinkProps {
-  img: string
+  Icon: React.ElementType
+  iconBackground: string
   title: string
   description: string
   link: string
+  color: string
 }
 
 const CardWithLink: FC<CardWithLinkProps> = ({
-  img,
+  color,
+  Icon,
+  iconBackground,
   title,
   description,
   link
 }) => {
   return (
     <AppCard link={link}>
-      <Box alt='item image' component='img' src={img} sx={styles.img} />
+      <Box sx={{ ...styles.imgContainer, background: iconBackground }}>
+        {Icon ? (
+          <Icon
+            alt={title}
+            sx={{
+              color,
+              ...styles.img
+            }}
+          />
+        ) : null}
+      </Box>
       <TitleWithDescription
         description={description}
         style={styles.titleWithDescription}
