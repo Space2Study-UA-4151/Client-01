@@ -4,6 +4,7 @@ import { useAppSelector } from '~/hooks/use-redux'
 import { useModalContext } from '~/context/modal-context'
 
 import UserStepsWrapper from '~/components/user-steps-wrapper/UserStepsWrapper'
+import { PhotoProvider } from '~/contexts/PhotoContext'
 import PageWrapper from '~/components/page-wrapper/PageWrapper'
 import FindBlock from '~/components/find-block/FindBlock'
 
@@ -18,7 +19,7 @@ const TutorHome = () => {
     if (isFirstLogin) {
       setTimeout(() => {
         openModal({
-          component: <UserStepsWrapper userRole={userRole} />,
+          component: <PhotoProvider><UserStepsWrapper userRole={userRole} /></PhotoProvider>,
           paperProps: {
             sx: styles.modal
           }
