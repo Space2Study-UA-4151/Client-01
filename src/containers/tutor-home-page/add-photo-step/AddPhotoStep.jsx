@@ -1,14 +1,18 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Box, Button, Typography, CircularProgress } from '@mui/material';
 import { style } from '~/containers/tutor-home-page/add-photo-step/AddPhotoStep.style';
-import { usePhoto } from '~/contexts/PhotoContext';
+import { useStepContext } from '~/context/step-context';
 import addImageIcon from '~/assets/img/tutor-my-courses/add-image-icon.svg';
 
 const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
 
 const AddPhotoStep = ({ btnsBox }) => {
   const inputRef = useRef();
-  const { photo, setPhoto, preview, loading, setLoading, error, setError } = usePhoto();
+  const { stepData, handleStepData } = useStepContext();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const photo = stepData['photo'];
+  const [preview, setPreview] = useState(photo && photo instanceof File ? URL.createObjectURL(photo) : '');
 
   const handleFileChange = async (e) => {
     setError('');
@@ -16,25 +20,23 @@ const AddPhotoStep = ({ btnsBox }) => {
     if (!file) return;
     if (!allowedTypes.includes(file.type)) {
       setError('Only .png, .jpg, .jpeg files are allowed');
-      setPhoto(null);
+      handleStepData('photo', null);
+      setPreview('');
       return;
     }
     const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
     if (file.size > MAX_FILE_SIZE) {
       setError('File size must be less than 10 MB');
-      setPhoto(null);
+      handleStepData('photo', null);
+      setPreview('');
       return;
     }
     setLoading(true);
-    setPhoto(file);
-    try {
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-    } catch (e) {
-      setError('Upload failed');
+    handleStepData('photo', file);
+    setPreview(URL.createObjectURL(file));
+    setTimeout(() => {
       setLoading(false);
-    }
+    }, 1000);
     e.target.value = null;
   };
 
